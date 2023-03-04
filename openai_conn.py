@@ -5,6 +5,20 @@ import os
 
 load_dotenv()
 
+def construct_message(role, main_query, examples, params):
+
+    message = [
+    {"role": "system", "content": f"You are a {role}"},
+    {"role": "user", "content": main_query}]
+
+    if examples[0]:
+        message.extend([{"role": "user", "content": "I will provide you with an example that you can try to emulate"},
+                        {"role": "user", "content": examples[1]}])
+    if params[0]:
+        message.extend([{"role": "user", "content": "I will provide you with an some data that you can use in the "
+                                                    "response"},
+                        {"role": "user", "content": params[1]}])
+    return message
 
 class openai_conn():
     def __init__(self) -> None:
@@ -40,6 +54,7 @@ class openai_conn():
         )
         # To get the message only, you parse the response: response['choices'][0]['message']['content'],
         return response
+
 
 
 
